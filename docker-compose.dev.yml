@@ -2,7 +2,7 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: mysql-db-dev
+    container_name: dadokim-db-dev
     restart: always
     environment:
       - MYSQL_DATABASE=dadokim
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: springboot-app-dev
+    container_name: springboot-dadokim-dev
     env_file:
       - .env
     depends_on:
