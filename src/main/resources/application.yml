@@ -7,8 +7,12 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update # 데이터 손실 방지를 위해 update로 설정
       dialect: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
         format_sql: true
+
+# API Key 설정 (최상위 레벨로 이동)
+geminiapi.key: ${GEMINI_API_KEY}
+chatkey: ${GPT_API_KEY}
