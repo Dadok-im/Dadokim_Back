@@ -28,7 +28,7 @@ public class UserController {
     }
 
     // 회원가입
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Long>> joinApi(
             @Validated(UserRequest.addGroup.class) @RequestBody UserRequest request) {
 
@@ -38,21 +38,23 @@ public class UserController {
         return ResponseEntity.status(201).body(responseBody);
     }
 
-    // 유저 정보 조회
-    @GetMapping
+    // 유저 정보
+    //@GetMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
+    // -> 회원 정보 api 호출 시에 요청 헤더에 Content-Type 헤더를 같이 보내면 안된다.
+    @GetMapping("/me")
     public ResponseEntity<UserResponse> userMeApi() {
         return ResponseEntity.ok(userService.readUser());
     }
 
     // 유저 수정 (자체 로그인 유저만)
-    @PutMapping
+    @PutMapping("/put")
     public ResponseEntity<Long> updateUserApi(
             @Validated(UserRequest.updateGroup.class) @RequestBody UserRequest request) throws AccessDeniedException {
         return ResponseEntity.ok(userService.updateUser(request));
     }
 
     // 유저 제거 (자체/소셜)
-    @DeleteMapping
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUserApi(
             @Validated(UserRequest.deleteGroup.class) @RequestBody UserRequest request) throws AccessDeniedException {
         userService.deleteUser(request);

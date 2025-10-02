@@ -130,12 +130,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/jwt/exchange", "/jwt/refresh").permitAll()
                         .requestMatchers(HttpMethod.POST, "/logout").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/user/exist", "/user").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user").hasRole(UserRoleType.USER.name())
-                        .requestMatchers(HttpMethod.PUT, "/api/user").hasRole(UserRoleType.USER.name())
-                        .requestMatchers(HttpMethod.DELETE, "/api/user").hasRole(UserRoleType.USER.name())
+
+                        // UserController 매핑 반영
+                        .requestMatchers(HttpMethod.POST, "/api/user/exist").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/user/join").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/user/me").hasRole(UserRoleType.USER.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/user/put").hasRole(UserRoleType.USER.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/user/delete").hasRole(UserRoleType.USER.name())
+
                         .anyRequest().authenticated()
                 );
+
 
         // TODO: 로그인 관련 사용자 예외처리 --> 규격화된 에러 핸들러 처리 필요
         http
