@@ -2,7 +2,10 @@ package com.ayu.dadokim.global.config;
 
 
 import com.ayu.dadokim.business.user.form.Enum.UserRoleType;
+import com.ayu.dadokim.global.security.filter.JWTFilter;
 import com.ayu.dadokim.global.security.filter.LoginFilter;
+import com.ayu.dadokim.global.security.handler.RefreshTokenLogoutHandler;
+import com.ayu.dadokim.global.security.jwt.JwtUtil;
 import com.ayu.dadokim.global.security.jwt.service.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,18 +44,21 @@ public class SecurityConfig {
     private final AuthenticationSuccessHandler loginSuccessHandler;
     private final AuthenticationSuccessHandler socialSuccessHandler;
     private final JwtService jwtService;
+    private final JwtUtil jwtUtil;
 
     public SecurityConfig(
             AuthenticationConfiguration authenticationConfiguration,
             // Bean 에 주입 받을 때, Qualifier 를 사용한다 -> Handler 구분에 용이
             @Qualifier("LoginSuccessHandler") AuthenticationSuccessHandler loginSuccessHandler,
             @Qualifier("SocialSuccessHandler") AuthenticationSuccessHandler socialSuccessHandler,
-            JwtService jwtService
+            JwtService jwtService,
+            JwtUtil jwtUtil
     ) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.loginSuccessHandler = loginSuccessHandler;
         this.socialSuccessHandler = socialSuccessHandler;
         this.jwtService = jwtService;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -153,7 +159,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
-                        .addLogoutHandler(new RefreshTokenLogoutHandler(jwtService))
+                        .addLogoutHandler(new RefreshTokenLogoutHandler(jwtService, jwtUtil))
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.setContentType("application/json");
@@ -163,7 +169,7 @@ public class SecurityConfig {
 
         // 커스텀된 JWT 필터를 LogoutFilter 앞단에 추가
         http
-                .addFilterBefore(new JWTFilter(), LogoutFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil), LogoutFilter.class);
 
         // 커스텀 된 loginFilter 와 loginSuccessHandler 를 SecurityFilterChain 에 등록, 위치는 UsernamePasswordAuthenticationFilter 앞단
         http
