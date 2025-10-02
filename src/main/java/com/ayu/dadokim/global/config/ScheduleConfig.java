@@ -1,24 +1,20 @@
 package com.ayu.dadokim.global.config;
 
 
+import com.ayu.dadokim.global.security.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class ScheduleConfig {
 
-    private final RefreshRepository refreshRepository;
+    private final JwtService jwtService;
 
-    // Refresh 토큰 저장소 8일 지난 토큰 삭제
-    // Todo : service 단에 명시하여 사용하는 것이 더욱 적절하다.
+    // 매일 새벽 3시에 8일 지난 Refresh 토큰 삭제
     @Scheduled(cron = "0 0 3 * * *")
     public void refreshEntityTtlSchedule() {
-        LocalDateTime cutoff = LocalDateTime.now().minusDays(8);
-        refreshRepository.deleteByCreatedDateBefore(cutoff);
+        jwtService.cleanUpOldRefreshTokens();
     }
-
 }

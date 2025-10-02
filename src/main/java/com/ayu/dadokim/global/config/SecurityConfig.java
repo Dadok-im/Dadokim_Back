@@ -3,6 +3,7 @@ package com.ayu.dadokim.global.config;
 
 import com.ayu.dadokim.business.user.form.Enum.UserRoleType;
 import com.ayu.dadokim.global.security.filter.LoginFilter;
+import com.ayu.dadokim.global.security.jwt.service.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
