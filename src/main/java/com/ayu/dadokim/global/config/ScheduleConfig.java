@@ -1,6 +1,6 @@
 package com.ayu.dadokim.global.config;
 
-import com.loginapi.backend.global.security.jwt.repository.RefreshRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
