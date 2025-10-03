@@ -1,5 +1,4 @@
 package com.ayu.dadokim.business.map.controller;
-
 import com.ayu.dadokim.business.map.dto.MapDto;
 import com.ayu.dadokim.business.map.service.MapService;
 import jakarta.validation.constraints.Max;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/clinics")
 @Validated
 @RequiredArgsConstructor
-public class MapController {
+public class  MapController {
 
     private final MapService mapService;
 
