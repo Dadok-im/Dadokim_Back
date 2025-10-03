@@ -1,3 +1,13 @@
+
+server:
+  port: 8080
+
+cors:
+  allowed-origins: "http://localhost:5173"
+
+# 카카오 REST API 키 주입
+#kakao: rest-api-key: ${kakao.rest-api-key}\
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/dadokim
@@ -11,4 +21,13 @@ spring:
       dialect: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
+
         format_sql: true
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+
+
